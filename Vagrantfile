@@ -30,4 +30,6 @@ Vagrant.configure("2") do |config|
   #docker
   config.vm.synced_folder "docker/", home_dir + "/docker",type: "nfs"
 
+  config.vm.synced_folder "src/", home_dir + "/src", type: "nfs" , mount_options: ['actimeo=3']
+
 end
