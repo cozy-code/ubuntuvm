@@ -38,8 +38,8 @@ Vagrant.configure("2") do |config|
     ]
   end
 
-  config.vm.synced_folder "provision/", home_dir + "/provision",type: "nfs"
-  config.vm.synced_folder "src/", home_dir + "/src", type: "nfs" , mount_options: ['actimeo=3']
+  config.vm.synced_folder "provision/", home_dir + "/provision",type: "nfs" , nfs_udp: false
+  config.vm.synced_folder "src/", home_dir + "/src", type: "nfs" , nfs_udp: false ,mount_options: ['actimeo=3']
 
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
