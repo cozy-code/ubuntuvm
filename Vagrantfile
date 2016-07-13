@@ -22,9 +22,20 @@ Vagrant.configure("2") do |config|
   # Provider-specific configuration so you can fine-tune various
   config.vm.provider "virtualbox" do |vb|
     # Customize the amount of memory on the VM:
+    # http://qiita.com/hidekuro/items/385bcc4b9eb43945751d
+    # http://vboxmania.net/content/vboxmanage-modifyvm%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89
     vb.memory = "1024"
     vb.gui = true
     vb.customize ["storagectl", :id, "--name", "SCSI Controller", "--hostiocache", "on"]
+    vb.customize [
+      "modifyvm", :id,
+      "--hwvirtex", "on",
+      "--nestedpaging", "on",
+      "--largepages", "on",
+      "--ioapic", "on",
+      "--pae", "on",
+      "--paravirtprovider", "kvm",
+    ]
   end
 
   config.vm.synced_folder "provision/", home_dir + "/provision",type: "nfs"
