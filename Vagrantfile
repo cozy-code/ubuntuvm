@@ -1,6 +1,11 @@
+LOGFILE = File.join(File.dirname(__FILE__), "ubuntu-xenial-16.04-cloudimg-console.log")
+
 # see provision/base.sh
 # emergency command > ssh 192.168.33.10 -p 25252 -i FULLPATH/.vagrant/machines/default/virtualbox/private_key -l ububtu
-ssh_port = 25252
+ssh_port = 22   #use 22 at first time
+if File.exist?(LOGFILE)
+  ssh_port = 25252
+end
 home_dir="/home/ubuntu"
 
 Vagrant.configure("2") do |config|
@@ -18,18 +23,22 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |vb|
     # Customize the amount of memory on the VM:
     vb.memory = "1024"
+    vb.gui = true
   end
 
   config.vm.synced_folder "provision/", home_dir + "/provision",type: "nfs"
+  config.vm.synced_folder "src/", home_dir + "/src", type: "nfs" , mount_options: ['actimeo=3']
+
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "base",           type:"shell",  privileged: false, path: "provision/base.sh"
-  config.vm.provision "docker",         type:"shell",  privileged: false, path: "provision/docker.sh"
 
   #docker
-  config.vm.synced_folder "docker/", home_dir + "/docker",type: "nfs"
+  # config.vm.synced_folder "docker/", home_dir + "/docker",type: "nfs"
+  # config.vm.provision "docker",         type:"shell",  privileged: false, path: "provision/docker.sh"
 
-  config.vm.synced_folder "src/", home_dir + "/src", type: "nfs" , mount_options: ['actimeo=3']
+  #node
+  config.vm.provision "node",         type:"shell",  privileged: false, path: "provision/node.sh"
 
 end

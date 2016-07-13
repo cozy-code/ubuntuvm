@@ -12,7 +12,9 @@
 # docker rm $(docker ps -f status=exited -q)
 #
 # <build>
-# docker build -t test-image .
+# docker build -t my-nodejs .
+# <use>
+# docker run -it my-nodejs /bin/bash
 
 FROM node:5-slim
 
