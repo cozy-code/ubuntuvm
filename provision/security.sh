@@ -4,6 +4,9 @@ set -x
 #load config file
 . ~/provision/config_value
 
+
+echo $SSH_PORT > ~/provision/ssh_port
+
 #diable password login
 TIMESTAMP=`date -u +%s`
 sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.$TIMESTAMP.back
@@ -21,6 +24,8 @@ sudo apt-get -y install ufw
 sudo ufw default deny
 sudo ufw allow $SSH_PORT
 sudo ufw limit 22
-sudo ufw --force enable
 
-sudo echo $SSH_PORT| sudo tee /vagrant/ssh_port
+#node express
+sudo ufw allow 9000
+
+sudo ufw --force enable

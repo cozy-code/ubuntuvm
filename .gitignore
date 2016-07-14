@@ -10,3 +10,4 @@ provision/cert/*
 !provision/cert/README.txt
 package.box
 *console.log
+ssh_port

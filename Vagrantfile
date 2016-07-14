@@ -1,10 +1,10 @@
-SSH_PORT_FILE = File.join(File.dirname(__FILE__), "ssh_port")
+SSH_PORT_FILE = File.join(File.dirname(__FILE__), "provision/ssh_port")
 
 # see provision/base.sh
 # emergency command > ssh 192.168.33.10 -p 25252 -i FULLPATH/.vagrant/machines/default/virtualbox/private_key -l ububtu
 ssh_port = 22   #use 22 at first time
 if File.exist?(SSH_PORT_FILE)
-  ssh_port = File.read(SSH_PORT_FILE)
+  ssh_port = File.read(SSH_PORT_FILE).to_i
 end
 home_dir="/home/ubuntu"
 
@@ -39,16 +39,12 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "src/", home_dir + "/src",
     type: "nfs" , nfs_udp: false ,
     mount_options: ["actimeo=1", "async", "nolock", "nfsvers=3", "vers=3", "tcp", "noatime", "timeo=7", "soft", "rsize=8192", "wsize=8192"]
-    # ["async", "nolock", "nfsvers=3", "vers=3", "tcp", "noatime", "soft", "rsize=8192", "wsize=8192"]
-    # ['noatime,nodiratime,relatime,actimeo=3,lookupcache=none']
-    # ['nolock,vers=3,noatime,actimeo=1']
-    # ['actimeo=3,lookupcache=none']
 
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "base",           type:"shell",  privileged: false, path: "provision/base.sh"
-  #config.vm.provision "security",       type:"shell",  privileged: false, path: "provision/security.sh"
+  config.vm.provision "security",       type:"shell",  privileged: false, path: "provision/security.sh"
 
   #docker
   # config.vm.synced_folder "docker/", home_dir + "/docker",type: "nfs"
@@ -60,7 +56,7 @@ Vagrant.configure("2") do |config|
 end
 
 # re-create
-# vagrant halt; vagrant destroy; rm -rf .vagrant/; rm ubuntu-xenial-16.04-cloudimg-console.log
+# vagrant halt; vagrant destroy; rm -rf .vagrant/; rm provision/ssh_port
 
 # save as a box
 # vagrant halt; vagrant package;  vagrant box add --force ubuntu16/base package.box
