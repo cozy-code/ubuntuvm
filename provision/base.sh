@@ -13,26 +13,17 @@ fi
 sudo cp ~/provision/cert/*.crt /usr/local/share/ca-certificates/
 sudo update-ca-certificates
 
+# /etc/fstab
+# original = "LABEL=cloudimg-rootfs    /    ext4   defaults    0 0"
+echo "LABEL=cloudimg-rootfs   /    ext4   defaults,noatime,nodiratime,relatime    0 1" | sudo tee /etc/fstab
 
 sudo apt-get -y update
 sudo apt-get -y upgrade
 
 
-#diable password login
-TIMESTAMP=`date -u +%s`
-sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.$TIMESTAMP.back
-EDIT="s/^PermitRootLogin .*$/PermitRootLogin no/"
-EDIT="$EDIT;s/Port [0-9 ]*$/Port $SSH_PORT/"
-EDIT="$EDIT;s/PasswordAuthentication .*$/PasswordAuthentication no/"
-cat /etc/ssh/sshd_config | sed "$EDIT"  | sudo tee /etc/ssh/sshd_config
+# bash_profile
+if !(grep -q "~/\.bashrc" $HOME/.bash_profile); then
+    echo "test -r ~/.bashrc && . ~/.bashrc" >> $HOME/.bash_profile
+    . $HOME/.bash_profile
+fi
 
-sudo service ssh restart
-
-# fire wall
-#sudo apt-get -y install iptables
-
-sudo apt-get -y install ufw
-sudo ufw default deny
-sudo ufw allow $SSH_PORT
-sudo ufw limit 22
-sudo ufw --force enable

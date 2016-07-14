@@ -7,7 +7,7 @@ if !(which nodebrew >/dev/null); then
     # install
     curl -sSL git.io/nodebrew | perl - setup
     if !(grep -q "export PATH=$HOME/\.nodebrew/current/bin:" $HOME/.bash_profile); then
-        echo "export PATH=$HOME/.nodebrew/current/bin:$PATH" >> $HOME/.bash_profile
+        echo "export PATH=$HOME/.nodebrew/current/bin:\$PATH" >> $HOME/.bash_profile
         . $HOME/.bash_profile
     fi
 else
@@ -26,9 +26,15 @@ fi
 nodebrew install-binary v5.x
 nodebrew use v5.x
 
+npm update -g
+npm update -g npm
+
 sudo apt-get -y install git net-tools sudo bzip2
 
-npm install -g bower grunt-cli gulp yo
+npm install -g bower
+npm install -g grunt-cli
+npm install -g gulp gulp-cli
+npm install -g yo
 npm install -g generator-angular-fullstack
 npm install -g npm-check-updates
 
