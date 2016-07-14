@@ -32,21 +32,17 @@ Vagrant.configure("2") do |config|
     # http://d.hatena.ne.jp/ytoku/20160502/1462205664
     vb.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
     vb.customize ["storagectl", :id, "--name", "SCSI Controller", "--hostiocache", "on"]
-    # vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-    # vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    # vb.customize ["modifyvm", :id,
-    #   "--hwvirtex", "on",
-    #   "--nestedpaging", "on",
-    #   "--largepages", "on",
-    #   "--ioapic", "on",
-    #   "--pae", "on",
-    #   "--paravirtprovider", "kvm",
-    # ]
 
   end
 
   config.vm.synced_folder "provision/", home_dir + "/provision",type: "nfs" , nfs_udp: false
-  config.vm.synced_folder "src/", home_dir + "/src", type: "nfs" , nfs_udp: false ,mount_options: ['actimeo=3']
+  config.vm.synced_folder "src/", home_dir + "/src",
+    type: "nfs" , nfs_udp: false ,
+    mount_options: ["actimeo=1", "async", "nolock", "nfsvers=3", "vers=3", "tcp", "noatime", "timeo=7", "soft", "rsize=8192", "wsize=8192"]
+    # ["async", "nolock", "nfsvers=3", "vers=3", "tcp", "noatime", "soft", "rsize=8192", "wsize=8192"]
+    # ['noatime,nodiratime,relatime,actimeo=3,lookupcache=none']
+    # ['nolock,vers=3,noatime,actimeo=1']
+    # ['actimeo=3,lookupcache=none']
 
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
@@ -69,3 +65,18 @@ end
 # save as a box
 # vagrant halt; vagrant package;  vagrant box add --force ubuntu16/base package.box
 # vagrant box list
+
+# #
+# # nfs.conf: the NFS configuration file
+# #
+# nfs.server.async=1
+# nfs.server.verbose=3
+# nfs.server.nfsd_threads=512
+# nfs.server.tcp=1
+# nfs.server.verbose=3
+# nfs.server.wg_delay_v3=1
+# nfs.client.allow_async=1
+# nfs.client.nfsiod_thread_max=512
+# nfs.client.mount.options=async,nfsvers=3,mountvers=3,rsize=8192,wsize=8192,acdirmax=3600,soft,intr,tcp
+# nfs.statd.verbose=1
+
