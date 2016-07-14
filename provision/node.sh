@@ -2,6 +2,16 @@
 
 set -x
 
+#need more memory
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+
+if !(grep -q "/swapfile" /etc/fstab); then
+    echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+fi
+
 # -k: ignore SSL error
 if !(which nodebrew >/dev/null); then
     # install
