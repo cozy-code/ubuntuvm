@@ -27,3 +27,15 @@ if !(grep -q "~/\.bashrc" $HOME/.bash_profile); then
     . $HOME/.bash_profile
 fi
 
+#add password enable working user
+if !( grep "^$LOGINUSER:" /etc/passwd > /dev/null ) && [ -e ~/provision/public_key/$LOGINUSER.pub ]; then
+    sudo useradd -m $LOGINUSER
+    echo "$LOGINUSER:$LOGINUSER_PASS" | sudo chpasswd
+    sudo usermod -aG sudo $LOGINUSER
+    sudo mkdir /home/$LOGINUSER/.ssh
+    sudo chown $LOGINUSER:$LOGINUSER /home/$LOGINUSER/.ssh
+    sudo chmod 700 /home/$LOGINUSER/.ssh
+    cat ~/provision/public_key/$LOGINUSER.pub | sudo tee -a /home/$LOGINUSER/.ssh/authorized_keys
+    sudo chown $LOGINUSER:$LOGINUSER /home/$LOGINUSER/.ssh/authorized_keys
+    sudo chmod 600 /home/$LOGINUSER/.ssh/authorized_keys
+fi

@@ -1,3 +1,6 @@
 SSH_PORT=25252
 WORKING_USER=`whoami`
 #ubuntu`whoami`
+
+LOGINUSER=auser
+LOGINUSER_PASS=apass

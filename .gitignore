@@ -11,3 +11,4 @@ provision/cert/*
 package.box
 *console.log
 ssh_port
+provision/public_key/*.pub

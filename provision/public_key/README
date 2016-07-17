@@ -1,0 +1,1 @@
+put ssh public key file([username].pub) for LOGINUSER(see config_value)
