@@ -4,3 +4,5 @@ WORKING_USER=`whoami`
 
 LOGINUSER=auser
 LOGINUSER_PASS=apass
+
+MYSQL_ROOT_PASSWORD=mypass

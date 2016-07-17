@@ -44,14 +44,15 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "base",           type:"shell",  privileged: false, path: "provision/base.sh"
-  config.vm.provision "security",       type:"shell",  privileged: false, path: "provision/security.sh"
+  #config.vm.provision "security",       type:"shell",  privileged: false, path: "provision/security.sh"
+  config.vm.provision "security",       type:"shell",  privileged: false, path: "provision/nginx.sh"
 
   #docker
   # config.vm.synced_folder "docker/", home_dir + "/docker",type: "nfs"
   # config.vm.provision "docker",         type:"shell",  privileged: false, path: "provision/docker.sh"
 
   #node
-  config.vm.provision "node",         type:"shell",  privileged: false, path: "provision/node.sh"
+  #config.vm.provision "node",         type:"shell",  privileged: false, path: "provision/node.sh"
 
 end
 
