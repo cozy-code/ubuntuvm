@@ -28,7 +28,7 @@ Vagrant.configure("2") do |config|
     # http://vboxmania.net/content/vboxmanage-modifyvm%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89
     vb.memory = "1024"
     vb.cpus = 1
-    vb.gui = true
+    # vb.gui = true
     # http://d.hatena.ne.jp/ytoku/20160502/1462205664
     vb.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
     vb.customize ["storagectl", :id, "--name", "SCSI Controller", "--hostiocache", "on"]

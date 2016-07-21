@@ -14,9 +14,10 @@ echo "mysql-server mysql-server/root_password_again password $MYSQL_ROOT_PASSWOR
 sudo apt-get -y install mysql-server
 
 #PHP
-sudo apt-get install -y php-fpm php-mysql
+sudo apt-get install -y php-fpm php-mysql php php-cgi php-cli php-gd php-apcu php-pear php-xmlrpc php-mbstring php-mcrypt
 
-PHP_INI_FILE=`php -i | grep "Loaded Configuration File" | awk -F'=> ' '{print $2}'`
+#PHP_INI_FILE=`php -i | grep "Loaded Configuration File" | awk -F'=> ' '{print $2}'`
+PHP_INI_FILE=/etc/php/7.0/fpm/php.ini
 TIMESTAMP=`date -u +%s`
 sudo cp $PHP_INI_FILE $PHP_INI_FILE.$TIMESTAMP.back
 cat $PHP_INI_FILE | sed -e "s/^;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" | sudo tee $PHP_INI_FILE

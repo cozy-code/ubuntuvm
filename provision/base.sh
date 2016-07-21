@@ -31,11 +31,19 @@ fi
 if !( grep "^$LOGINUSER:" /etc/passwd > /dev/null ) && [ -e ~/provision/public_key/$LOGINUSER.pub ]; then
     sudo useradd -m $LOGINUSER
     echo "$LOGINUSER:$LOGINUSER_PASS" | sudo chpasswd
-    sudo usermod -aG sudo $LOGINUSER
+    sudo usermod -aG sudo,adm,netdev $LOGINUSER
     sudo mkdir /home/$LOGINUSER/.ssh
     sudo chown $LOGINUSER:$LOGINUSER /home/$LOGINUSER/.ssh
     sudo chmod 700 /home/$LOGINUSER/.ssh
     cat ~/provision/public_key/$LOGINUSER.pub | sudo tee -a /home/$LOGINUSER/.ssh/authorized_keys
     sudo chown $LOGINUSER:$LOGINUSER /home/$LOGINUSER/.ssh/authorized_keys
     sudo chmod 600 /home/$LOGINUSER/.ssh/authorized_keys
+fi
+
+#need more memory
+if [ ! -e /swapfile ]; then
+    sudo fallocate -l 2G /swapfile
+    sudo chmod 600 /swapfile
+    sudo mkswap /swapfile
+    sudo swapon /swapfile
 fi
